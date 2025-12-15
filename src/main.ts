@@ -1,24 +1,33 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { Renderer } from './core/renderer';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const renderer = new Renderer();
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+const heroImg = new Image();
+heroImg.src = '/assets/graphics/classes/master.png';
+
+const weaponImg = new Image();
+weaponImg.src = '/assets/graphics/weapons/stick.png';
+
+let playerX = 400;
+let playerY = 300;
+let angle = 0;
+function gameLoop() {
+  renderer.clear();
+
+  // Animação se movendo pela arena
+  playerX += Math.sin(Date.now() / 500) * 2;
+
+  // Desenha o Personagem
+  renderer.drawSprite(heroImg, playerX, playerY, 64);
+
+  // Desenha a Arma (orbitando o personagem para testar)
+  angle += 0.05;
+  const weaponX = playerX + Math.cos(angle) * 50;
+  const weaponY = playerY + Math.sin(angle) * 50;
+  renderer.drawSprite(weaponImg, weaponX, weaponY, 32);
+
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
