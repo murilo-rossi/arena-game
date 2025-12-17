@@ -1,33 +1,79 @@
-import './style.css'
-import { Renderer } from './core/renderer';
+import { Engine, Actor, Color, vec, ImageSource, Loader } from 'excalibur';
+import './style.css';
 
-const renderer = new Renderer();
+// Resources configuration
+const Resources = {
+  Hero: new ImageSource('/assets/graphics/classes/master.png'),
+  Weapon: new ImageSource('/assets/graphics/weapons/stick.png'),
+};
 
-const heroImg = new Image();
-heroImg.src = '/assets/graphics/classes/master.png';
-
-const weaponImg = new Image();
-weaponImg.src = '/assets/graphics/weapons/stick.png';
-
-let playerX = 400;
-let playerY = 300;
-let angle = 0;
-function gameLoop() {
-  renderer.clear();
-
-  // Animação se movendo pela arena
-  playerX += Math.sin(Date.now() / 500) * 2;
-
-  // Desenha o Personagem
-  renderer.drawSprite(heroImg, playerX, playerY, 64);
-
-  // Desenha a Arma (orbitando o personagem para testar)
-  angle += 0.05;
-  const weaponX = playerX + Math.cos(angle) * 50;
-  const weaponY = playerY + Math.sin(angle) * 50;
-  renderer.drawSprite(weaponImg, weaponX, weaponY, 32);
-
-  requestAnimationFrame(gameLoop);
+// Load resources
+const loader = new Loader();
+for (const res of Object.values(Resources)) {
+  loader.addResource(res);
 }
 
-gameLoop();
+// Game configuration
+const game = new Engine({
+  width: 800,
+  height: 800,
+  backgroundColor: Color.fromHex('#a1c8d6ff'),
+  pixelArt: true, // Prevents pixel art from being smoothed
+});
+
+class Player extends Actor {
+  constructor() {
+    super({
+      pos: vec(400, 400),
+      width: 64,
+      height: 64,
+      color: Color.White,
+    });
+  }
+
+  onInitialize() {
+    // Set the player sprite
+    this.graphics.use(Resources.Hero.toSprite());
+    this.scale = vec(2, 2);
+  }
+
+  // Update loop
+  onPostUpdate(engine: Engine, delta: number, baseSpeed: number = 2) {
+    // Movement: The character keeps in a straight line at a given speed until it hits the border of the screen
+    //this.pos.x += baseSpeed;
+    //if (this.pos.x > game.canvas.width) {
+    //  baseSpeed *= -1;
+    //}
+  }
+}
+
+class Weapon extends Actor {
+  constructor() {
+    super({
+      width: 32,
+      height: 32,
+      anchor: vec(1.6, 0.5), // Weapon distance from player (orbital)
+    });
+  }
+
+  onInitialize() {
+    const weaponSprite = Resources.Weapon.toSprite();
+    weaponSprite.rotation = -Math.PI / 2; // Sprite image rotation (standing up)
+    this.graphics.use(weaponSprite);
+  }
+
+  onPostUpdate(engine: Engine, delta: number, baseRotationSpeed: number = 2) {
+    this.rotation += baseRotationSpeed * (delta / 1000); // Weapon rotation speed
+  }
+}
+
+const player = new Player();
+const weapon = new Weapon();
+
+player.addChild(weapon);
+
+game.add(player);
+
+game.start(loader).then(() => {
+  console.log('Jogo iniciou!');
+});
