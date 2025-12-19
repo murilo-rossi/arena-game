@@ -7,7 +7,7 @@ export class Player extends Actor {
 
     constructor(classData: any, sprite: ImageSource) {
         super({
-            pos: vec(400, 300),
+            pos: vec(400, 400),
             width: 64,
             height: 64
         });
