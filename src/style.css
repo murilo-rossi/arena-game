@@ -20,3 +20,35 @@ canvas {
   align-items: center;
   gap: 20px;
 }
+
+#class-selector-test,
+#weapon-selector-test {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid #4a4a4a;
+  background-color: #3a3a3a;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+button:hover {
+  background-color: #4a4a4a;
+  border-color: #6a6a6a;
+}
+
+button.selected {
+  background-color: #4CAF50;
+  border-color: #45a049;
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+}
+
+button:active {
+  transform: translateY(0);
+}
