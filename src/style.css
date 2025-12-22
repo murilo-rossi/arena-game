@@ -13,3 +13,10 @@ canvas {
   background-color: #1a1a1a;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
+
+#ui-layer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}

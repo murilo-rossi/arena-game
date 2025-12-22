@@ -1,4 +1,4 @@
-import { Actor, vec, ImageSource } from 'excalibur';
+import { Actor, vec, Engine, ImageSource, CollisionType } from 'excalibur';
 import { ModifierManager } from '../systems/ModifierManager';
 
 export class Player extends Actor {
@@ -9,14 +9,28 @@ export class Player extends Actor {
         super({
             pos: vec(400, 400),
             width: 64,
-            height: 64
+            height: 64,
+            collisionType: CollisionType.Active // Participate in physics
         });
+
+        this.body.bounciness = 1.0; // Perfect energy preservation
+        this.body.friction = 0; // No friction
+        this.body.useGravity = true;
+        // Circle collider for the player (radius = width / 2)
+        this.collider.useCircleCollider(32);
 
         this.baseStats = classData.baseStats;
         this.graphics.use(sprite.toSprite());
 
         // Initialize modifiers based on Firebase baseStats
         this.setupInitialModifiers();
+    }
+
+    onInitialize(engine: Engine) {
+        // Set initial movement once. The physics engine handles the rest.
+        const speed = this.currentMoveSpeed;
+        const angle = Math.random() * Math.PI * 2;
+        this.vel = vec(Math.cos(angle), Math.sin(angle)).scale(speed);
     }
 
     private setupInitialModifiers() {
