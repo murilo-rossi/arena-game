@@ -7,6 +7,68 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+#game-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+}
+
+#player1-selection {
+  order: 1;
+}
+
+#engine-container {
+  order: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#player2-selection {
+  order: 3;
+}
+
+.player-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background-color: #3a3a3a;
+  border-radius: 8px;
+  min-width: 200px;
+}
+
+.player-selection h2 {
+  margin: 0;
+  color: #ffffff;
+  text-align: center;
+  font-size: 20px;
+}
+
+.player-selection h3 {
+  margin: 0 0 8px 0;
+  color: #cccccc;
+  font-size: 14px;
+}
+
+.selector-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.class-selector,
+.weapon-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 canvas {
@@ -14,28 +76,16 @@ canvas {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
-#ui-layer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-#class-selector-test,
-#weapon-selector-test {
-  display: flex;
-  gap: 10px;
-}
-
 button {
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 10px 16px;
+  font-size: 14px;
   font-weight: bold;
   border: 2px solid #4a4a4a;
   background-color: #3a3a3a;
   color: #ffffff;
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: 4px;
+  transition: all 0.2s;
 }
 
 button:hover {
@@ -50,5 +100,5 @@ button.selected {
 }
 
 button:active {
-  transform: translateY(0);
+  transform: translateY(1px);
 }

@@ -52,6 +52,6 @@ export class Player extends Actor {
 
     // Example of how to get a calculated stat
     get currentMoveSpeed(): number {
-        return this.modifierManager.calculateStat('moveSpeed', this.baseStats.moveSpeed);
+        return this.modifierManager.calculateStat('moveSpeed', this.baseStats.moveSpeed) * 2;
     }
 }

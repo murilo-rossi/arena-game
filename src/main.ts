@@ -20,107 +20,151 @@ const game = new Engine({
   }
 });
 
+const engineContainer = document.getElementById('engine-container');
+const canvas = game.canvas;
+if (engineContainer && canvas) {
+  engineContainer.appendChild(canvas);
+}
+
 const dbService = new DatabaseService();
-const uiContainer = document.getElementById('ui-layer');
+
+// Selection state for both players
+interface PlayerSelection {
+  class: string | null;
+  weapon: string | null;
+}
+
+const player1Selection: PlayerSelection = { class: null, weapon: null };
+const player2Selection: PlayerSelection = { class: null, weapon: null };
 
 /**
- * Starts the game with the selected class.
- * @param classId The ID of the class to fetch from Firebase (e.g., 'master')
+ * Starts the game with both players.
  */
-async function startGame(classId: string, weaponId: string) {
-  // Hide the UI
-  if (uiContainer) uiContainer.style.display = 'none';
+async function startGame() {
+  // Hide the selection UI
+  const player1UI = document.getElementById('player1-selection');
+  const player2UI = document.getElementById('player2-selection');
+
+  if (player1UI) player1UI.style.display = 'none';
+  if (player2UI) player2UI.style.display = 'none';
 
   try {
-    // Fetch class data from Firestore
-    console.log(`Fetching data for class: ${classId}...`);
-    const classData = await dbService.getGameData('classes', classId);
+    // Fetch data for Player 1
+    console.log(`Fetching data for Player 1: ${player1Selection.class}, ${player1Selection.weapon}...`);
+    const p1ClassData = await dbService.getGameData('classes', player1Selection.class!);
+    const p1WeaponData = await dbService.getGameData('weapons', player1Selection.weapon!);
+    const p1ClassSprite = new ImageSource(`/assets/graphics/classes/${player1Selection.class}.png`);
+    const p1WeaponSprite = new ImageSource(`/assets/graphics/weapons/${player1Selection.weapon}.png`);
 
-    // Fetch weapon data from Firestore
-    console.log(`Fetching data for weapon: ${weaponId}...`);
-    const weaponData = await dbService.getGameData('weapons', weaponId);
+    // Fetch data for Player 2
+    console.log(`Fetching data for Player 2: ${player2Selection.class}, ${player2Selection.weapon}...`);
+    const p2ClassData = await dbService.getGameData('classes', player2Selection.class!);
+    const p2WeaponData = await dbService.getGameData('weapons', player2Selection.weapon!);
+    const p2ClassSprite = new ImageSource(`/assets/graphics/classes/${player2Selection.class}.png`);
+    const p2WeaponSprite = new ImageSource(`/assets/graphics/weapons/${player2Selection.weapon}.png`);
 
-    // Setup the specific sprite for this class
-    // Path: public/assets/graphics/classes/ID.png
-    const classSprite = new ImageSource(`/assets/graphics/classes/${classId}.png`);
-    const weaponSprite = new ImageSource(`/assets/graphics/weapons/${weaponId}.png`);
+    // Create Player 1
+    const player1 = new Player(p1ClassData, p1ClassSprite);
+    const weapon1 = new Weapon(p1WeaponData, p1WeaponSprite);
+    player1.addChild(weapon1);
+    player1.pos = vec(200, 400); // Spawn position for Player 1
+    player1.scale = vec(2.5, 2.5);
+    game.add(player1);
 
-    const player = new Player(classData, classSprite);
-    const weapon = new Weapon(weaponData, weaponSprite);
-    player.addChild(weapon);
-    game.add(player);
+    // Create Player 2
+    const player2 = new Player(p2ClassData, p2ClassSprite);
+    const weapon2 = new Weapon(p2WeaponData, p2WeaponSprite);
+    player2.addChild(weapon2);
+    player2.pos = vec(600, 400); // Spawn position for Player 2
+    player2.scale = vec(2.5, 2.5);
+    game.add(player2);
 
-    player.scale = vec(2, 2); //Testing sprite scale
+    // Load all sprites
+    const loader = new Loader([p1ClassSprite, p1WeaponSprite, p2ClassSprite, p2WeaponSprite]);
 
-    // Use Excalibur Loader to wait for the image
-    const loader = new Loader([classSprite, weaponSprite]);
-
-    // Start the engine and add the player
+    // Start the engine
     await game.start(loader);
 
     // Initialize Arena boundaries
     new Arena(game);
 
-    console.log(`${classData.name} has entered the arena!`);
+    console.log(`Both players have entered the arena!`);
   } catch (error) {
     console.error("Failed to start game:", error);
-    if (uiContainer) uiContainer.style.display = 'block'; // Show UI again on error
+    // Show UI again on error
+    if (player1UI) player1UI.style.display = 'flex';
+    if (player2UI) player2UI.style.display = 'flex';
   }
 }
 
 // Debug Toggle
 game.input.keyboard.on('press', (evt) => {
-  // Toggle debug with 'P' key
   if (evt.key === 'KeyP') {
     game.toggleDebug();
   }
 });
 
-// Selection state
-let selectedClass: string | null = null;
-let selectedWeapon: string | null = null;
+/**
+ * Check if both players have made their selections
+ */
+function checkBothPlayersReady() {
+  if (player1Selection.class && player1Selection.weapon &&
+    player2Selection.class && player2Selection.weapon) {
+    startGame();
+  }
+}
 
 /**
  * Initialize UI event listeners after DOM is ready
  */
 function initializeUI() {
-  const classButtons = document.querySelectorAll('[data-class]');
-  const weaponButtons = document.querySelectorAll('[data-weapon]');
+  // Get all buttons for both players
+  const allButtons = document.querySelectorAll('button[data-player]');
 
-  // Handle class selection
-  classButtons.forEach(button => {
+  allButtons.forEach(button => {
     button.addEventListener('click', () => {
-      // Remove previous selection
-      classButtons.forEach(btn => btn.classList.remove('selected'));
-      // Add selection to clicked button
-      button.classList.add('selected');
-      // Store selection
-      selectedClass = button.getAttribute('data-class');
-      checkSelection();
+      const playerNum = button.getAttribute('data-player');
+      const classId = button.getAttribute('data-class');
+      const weaponId = button.getAttribute('data-weapon');
+
+      if (playerNum === '1') {
+        if (classId) {
+          // Remove selection from other class buttons for Player 1
+          document.querySelectorAll('button[data-player="1"][data-class]').forEach(btn => {
+            btn.classList.remove('selected');
+          });
+          button.classList.add('selected');
+          player1Selection.class = classId;
+        } else if (weaponId) {
+          // Remove selection from other weapon buttons for Player 1
+          document.querySelectorAll('button[data-player="1"][data-weapon]').forEach(btn => {
+            btn.classList.remove('selected');
+          });
+          button.classList.add('selected');
+          player1Selection.weapon = weaponId;
+        }
+      } else if (playerNum === '2') {
+        if (classId) {
+          // Remove selection from other class buttons for Player 2
+          document.querySelectorAll('button[data-player="2"][data-class]').forEach(btn => {
+            btn.classList.remove('selected');
+          });
+          button.classList.add('selected');
+          player2Selection.class = classId;
+        } else if (weaponId) {
+          // Remove selection from other weapon buttons for Player 2
+          document.querySelectorAll('button[data-player="2"][data-weapon]').forEach(btn => {
+            btn.classList.remove('selected');
+          });
+          button.classList.add('selected');
+          player2Selection.weapon = weaponId;
+        }
+      }
+
+      // Check if both players are ready
+      checkBothPlayersReady();
     });
   });
-
-  // Handle weapon selection
-  weaponButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      // Remove previous selection
-      weaponButtons.forEach(btn => btn.classList.remove('selected'));
-      // Add selection to clicked button
-      button.classList.add('selected');
-      // Store selection
-      selectedWeapon = button.getAttribute('data-weapon');
-      checkSelection();
-    });
-  });
-}
-
-/**
- * Check if both class and weapon are selected, then start the game
- */
-async function checkSelection() {
-  if (selectedClass && selectedWeapon) {
-    await startGame(selectedClass, selectedWeapon);
-  }
 }
 
 // Initialize UI when DOM is ready
@@ -129,4 +173,3 @@ if (document.readyState === 'loading') {
 } else {
   initializeUI();
 }
-
