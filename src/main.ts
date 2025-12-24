@@ -7,6 +7,7 @@ import { DatabaseService } from './services/database';
 import { Player } from './game/entities/Player';
 import { Weapon } from './game/entities/Weapon';
 import { Arena } from './game/Arena';
+import { DebugUI } from './game/ui/DebugUI';
 import './style.css';
 
 // Game configuration
@@ -36,6 +37,9 @@ interface PlayerSelection {
 
 const player1Selection: PlayerSelection = { class: null, weapon: null };
 const player2Selection: PlayerSelection = { class: null, weapon: null };
+
+// Debug UI instance (will be initialized after game starts)
+let debugUI: DebugUI | null = null;
 
 /**
  * Starts the game with both players.
@@ -88,6 +92,10 @@ async function startGame() {
     // Initialize Arena boundaries
     new Arena(game);
 
+    // Initialize Debug UI
+    debugUI = new DebugUI(game, player1, player2);
+    game.add(debugUI); // Add to engine so onPostUpdate is called every frame
+
     console.log(`Both players have entered the arena!`);
   } catch (error) {
     console.error("Failed to start game:", error);
@@ -100,7 +108,10 @@ async function startGame() {
 // Debug Toggle
 game.input.keyboard.on('press', (evt) => {
   if (evt.key === 'KeyP') {
-    game.toggleDebug();
+    game.toggleDebug(); // Toggle Excalibur's built-in debug
+    if (debugUI) {
+      debugUI.toggle(); // Toggle custom stats display
+    }
   }
 });
 

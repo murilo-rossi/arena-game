@@ -9,7 +9,8 @@ export class Weapon extends Actor {
             width: 64,
             height: 64,
             anchor: vec(1.6, 0.5), // Weapon distance from player (orbital)
-            collisionType: CollisionType.Passive // Detects collision but doesn't affect physics
+            collisionType: CollisionType.Passive, // Detects collision but doesn't affect physics
+            z: 10 // Render above player sprite
         });
 
         this.weaponData = weaponData;
