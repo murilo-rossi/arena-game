@@ -39,7 +39,7 @@ export class WeaponHitboxHelper {
     private static applyBoxHitbox(weapon: Actor, config: HitboxConfig): void {
         const width = config.width ?? 64;
         const height = config.height ?? 8;
-        const anchorX = config.anchorX ?? 0.5;
+        const anchorX = config.anchorX ?? 1.6;
         const anchorY = config.anchorY ?? 0.5;
 
         weapon.collider.useBoxCollider(width, height, vec(anchorX, anchorY));

@@ -6,7 +6,7 @@ import { Engine, Color, ImageSource, Loader, vec, SolverStrategy } from 'excalib
 import { DatabaseService } from './services/database';
 import { Player } from './game/entities/Player';
 import { Weapon } from './game/entities/Weapon';
-import { Arena } from './game/Arena';
+import { Arena } from './game/components/Arena';
 import { DebugUI } from './game/ui/DebugUI';
 import './style.css';
 

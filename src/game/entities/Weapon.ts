@@ -1,8 +1,12 @@
 import { Actor, vec, Engine, ImageSource, CollisionType } from 'excalibur';
 import { WeaponHitboxHelper, type HitboxConfig } from '../systems/WeaponHitboxHelper';
+import { ModifierManager } from '../systems/ModifierManager';
+import type { WeaponBaseStats, ActiveSkill } from '../types/Stats';
 
 export class Weapon extends Actor {
-    private weaponData: any;
+    private baseStats: WeaponBaseStats;
+    private skill?: ActiveSkill;
+    public modifierManager = new ModifierManager();
 
     constructor(weaponData: any, sprite: ImageSource) {
         super({
@@ -13,7 +17,8 @@ export class Weapon extends Actor {
             z: 10 // Render above player sprite
         });
 
-        this.weaponData = weaponData;
+        this.baseStats = weaponData.baseStats;
+        this.skill = weaponData.activeSkill;
 
         // Apply hitbox from Firebase data
         if (weaponData.hitbox) {
@@ -29,16 +34,52 @@ export class Weapon extends Actor {
         this.graphics.use(WeaponSprite);
     }
 
-    onPostUpdate(_engine: Engine, delta: number, baseRotationSpeed: number = 2) {
-        this.rotation += baseRotationSpeed * (delta / 1000); // Weapon rotation speed
+    onPostUpdate(_engine: Engine, delta: number) {
+        this.rotation += 5 * (delta / 1000); // Weapon rotation speed
     }
 
-    // Getter for weapon stats (for future use in damage calculation, etc.)
-    get stats() {
-        return this.weaponData.baseStats;
+    // === Core Stats Getters ===
+
+    get damage(): number {
+        return this.modifierManager.calculateStat('damage', this.baseStats.damage);
     }
 
-    get activeSkill() {
-        return this.weaponData.activeSkill;
+    get baseAtkSpeed(): number {
+        return this.baseStats.baseAtkSpeed;
+    }
+
+    get sizeMultiplier(): number {
+        return this.modifierManager.calculateStat('sizeMultiplier', this.baseStats.sizeMultiplier);
+    }
+
+    // === Modifier Getters ===
+
+    get atkSpeedMultiplier(): number {
+        return this.baseStats.atkSpeedMultiplier;
+    }
+
+    get damageIncreaseFlat(): number {
+        return this.baseStats.damageIncreaseFlat;
+    }
+
+    get damageIncreaseMultiplier(): number {
+        return this.baseStats.damageIncreaseMultiplier;
+    }
+
+    // === Skill Getter ===
+
+    get activeSkill(): ActiveSkill | undefined {
+        return this.skill;
+    }
+
+    // === Legacy getter for compatibility ===
+
+    get stats(): WeaponBaseStats {
+        return this.baseStats;
+    }
+
+    // currentAtkSpeed will be moved to Player in next refactoring
+    get currentAtkSpeed(): number {
+        return this.modifierManager.calculateStat('atkSpeed', this.baseStats.baseAtkSpeed);
     }
 }

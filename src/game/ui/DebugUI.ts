@@ -67,7 +67,7 @@ export class DebugUI extends Actor {
         this.isVisible = true;
         this.player1StatsLabel.graphics.visible = true;
         this.player2StatsLabel.graphics.visible = true;
-        this.update(); // Update stats immediately
+        this.updateStats();
     }
 
     /**
@@ -80,39 +80,45 @@ export class DebugUI extends Actor {
     }
 
     /**
-     * Update stats display (call this in game loop if stats change)
+     * Update stats display
      */
-    update() {
-        if (!this.isVisible) return;
-
+    private updateStats() {
         // Get Player 1 stats
-        const p1Stats = this.getPlayerStats(this.player1, 'Player 1');
+        const p1Stats = this.getPlayerStats(this.player1, 'P1');
         this.player1StatsLabel.text = p1Stats;
 
         // Get Player 2 stats
-        const p2Stats = this.getPlayerStats(this.player2, 'Player 2');
+        const p2Stats = this.getPlayerStats(this.player2, 'P2');
         this.player2StatsLabel.text = p2Stats;
     }
 
     /**
-     * Format player stats as a string
+     * Format player stats as a string - optimized to reduce text size
      */
     private getPlayerStats(player: Player, playerName: string): string {
         const stats: string[] = [];
+        const weapon = player.children[0] as any; // Weapon
+
         stats.push(`=== ${playerName} ===`);
-        stats.push(`HP: ${player['baseStats']?.hp || 'N/A'}`);
-        stats.push(`Damage: ${player['baseStats']?.damage || 'N/A'}`);
-        stats.push(`Speed: ${player.currentMoveSpeed.toFixed(1)}`);
-        stats.push(`Pos: (${player.pos.x.toFixed(0)}, ${player.pos.y.toFixed(0)})`);
+        stats.push(`HP: ${player.hp}`);
+        stats.push(`Speed: ${player.currentMoveSpeed}`);
+        stats.push(`Damage:${player.damage.toFixed(1)} Crit:${(player.criticalChance * 100).toFixed(0)}%`);
+        stats.push(`Pos:(${player.pos.x.toFixed(0)},${player.pos.y.toFixed(0)})`);
         stats.push(`Vel: (${player.vel.x.toFixed(1)}, ${player.vel.y.toFixed(1)})`);
+
+        if (weapon && weapon.stats) {
+            stats.push(`W.Damage:${weapon.damage.toFixed(1)} W.Speed:${weapon.baseAtkSpeed.toFixed(1)}`);
+        }
 
         return stats.join('\n');
     }
 
-    // Update stats every frame
+    /**
+     * Called automatically every frame by Excalibur
+     */
     onPostUpdate(_engine: Engine, _delta: number) {
         if (this.isVisible) {
-            this.update();
+            this.updateStats();
         }
     }
 }

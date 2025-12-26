@@ -1,9 +1,13 @@
 import { Actor, vec, Engine, ImageSource, CollisionType } from 'excalibur';
 import { ModifierManager } from '../systems/ModifierManager';
+import type { CharacterBaseStats, ActiveSkill, OnHitModifiers } from '../types/Stats';
+import type { Weapon } from './Weapon';
 
 export class Player extends Actor {
     public modifierManager = new ModifierManager();
-    private baseStats: any;
+    private baseStats: CharacterBaseStats;
+    private skill?: ActiveSkill;
+    public onHitModifiers?: OnHitModifiers; // Public so it can be used for combat later
 
     constructor(classData: any, sprite: ImageSource) {
         super({
@@ -20,6 +24,8 @@ export class Player extends Actor {
         this.collider.useCircleCollider(32);
 
         this.baseStats = classData.baseStats;
+        this.onHitModifiers = classData.onHitTakenGiven;
+        this.skill = classData.activeSkill;
         this.graphics.use(sprite.toSprite());
 
         // Initialize modifiers based on Firebase baseStats
@@ -50,8 +56,67 @@ export class Player extends Actor {
         }
     }
 
-    // Example of how to get a calculated stat
+    // Getters 
+    get hp(): number {
+        return this.baseStats.hp;
+    }
+
     get currentMoveSpeed(): number {
         return this.modifierManager.calculateStat('moveSpeed', this.baseStats.moveSpeed) * 2;
+    }
+
+    get sizeMultiplier(): number {
+        return this.modifierManager.calculateStat('sizeMultiplier', this.baseStats.sizeMultiplier);
+    }
+
+    get damage(): number {
+        const weapon = this.children[0] as Weapon; // Weapon
+        if (!weapon || !weapon.damage) {
+            return this.baseStats.damageIncreaseFlat; // Fallback if no weapon
+        }
+
+        // Base damage from weapon + player's flat damage increase
+        const baseDamage = weapon.damage + this.baseStats.damageIncreaseFlat;
+
+        // Apply player's damage multiplier
+        return this.modifierManager.calculateStat('damage', baseDamage);
+    }
+
+    get criticalChance(): number {
+        return this.baseStats.criticalChance;
+    }
+
+    get criticalMultiplier(): number {
+        return this.baseStats.criticalMultiplier;
+    }
+
+    get criticalDamageMultiplier(): number {
+        return this.baseStats.criticalDamageIncreaseMultiplier;
+    }
+
+    get atkSpeedIncreaseFlat(): number {
+        return this.baseStats.atkSpeedIncreaseFlat;
+    }
+
+    get atkSpeedIncreaseMultiplier(): number {
+        return this.baseStats.atkSpeedIncreaseMultiplier;
+    }
+
+    get defenseFlat(): number {
+        return this.baseStats.defenseIncreaseFlat;
+    }
+
+    get defenseMultiplier(): number {
+        return this.baseStats.defenseIncreaseMultiplier;
+    }
+
+    get activeSkill(): ActiveSkill | undefined {
+        return this.skill;
+    }
+
+    // Raw baseStats access for debugging
+
+    get stats(): CharacterBaseStats {
+        return this.baseStats;
     }
 }
