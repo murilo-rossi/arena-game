@@ -20,6 +20,11 @@ export class Weapon extends Actor {
         this.baseStats = weaponData.baseStats;
         this.skill = weaponData.activeSkill;
 
+        // Apply size multiplier to weapon scale
+        // sizeMultiplier: 0.0 = normal size (1.0), 0.4 = 1.4x size
+        const scaleFactor = 1 + this.baseStats.sizeMultiplier;
+        this.scale = vec(scaleFactor, scaleFactor);
+
         // Apply hitbox from Firebase data
         if (weaponData.hitbox) {
             WeaponHitboxHelper.applyHitbox(this, weaponData.hitbox as HitboxConfig);
@@ -35,7 +40,10 @@ export class Weapon extends Actor {
     }
 
     onPostUpdate(_engine: Engine, delta: number) {
-        this.rotation += 5 * (delta / 1000); // Weapon rotation speed
+        // Rotation speed based on attack speed from Firebase
+        // baseAtkSpeed: 1.0 = normal speed, 0.7 = slower, 1.5 = faster
+        const rotationSpeed = 5 * this.baseStats.baseAtkSpeed;
+        this.rotation += rotationSpeed * (delta / 1000);
     }
 
     // === Core Stats Getters ===
