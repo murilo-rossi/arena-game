@@ -97,7 +97,7 @@ export class DebugUI extends Actor {
      */
     private getPlayerStats(player: Player, playerName: string): string {
         const stats: string[] = [];
-        const weapon = player.children[0] as any; // Weapon
+        const weapon = player.getWeapon();
 
         stats.push(`=== ${playerName} ===`);
         stats.push(`HP: ${player.hp}`);

@@ -12,7 +12,7 @@ export class Weapon extends Actor {
         super({
             width: 64,
             height: 64,
-            anchor: vec(1.6, 0.5), // Weapon distance from player (orbital)
+            anchor: vec(1.5, 0.5), // Weapon distance from player (orbital)
             collisionType: CollisionType.Passive, // Detects collision but doesn't affect physics
             z: 10 // Render above player sprite
         });
@@ -21,29 +21,35 @@ export class Weapon extends Actor {
         this.skill = weaponData.activeSkill;
 
         // Apply size multiplier to weapon scale
-        // sizeMultiplier: 0.0 = normal size (1.0), 0.4 = 1.4x size
         const scaleFactor = 1 + this.baseStats.sizeMultiplier;
         this.scale = vec(scaleFactor, scaleFactor);
+
+        // Position relative to Pivot (Orbit Radius)
+        // Distance from player center
+        this.pos = vec(33, 0);
+
+        // Centered anchor: sprite and hitbox rotate around weapon center
+        this.anchor = vec(0, 0.5);
 
         // Apply hitbox from Firebase data
         if (weaponData.hitbox) {
             WeaponHitboxHelper.applyHitbox(this, weaponData.hitbox as HitboxConfig);
         } else {
-            // Fallback to default box hitbox if no data
+            // Fallback: centered anchor for Pivot architecture
             console.warn(`Weapon ${weaponData.id} has no hitbox data. Using default.`);
-            this.collider.useBoxCollider(64, 8, vec(1.6, 0.5));
+            this.collider.useBoxCollider(64, 8, vec(0.5, 0.5));
         }
 
         let WeaponSprite = sprite.toSprite();
-        WeaponSprite.rotation = -Math.PI / 2; // Sprite image rotation (standing up)
+        // Adjust sprite rotation if needed so it points "out"
+
+        WeaponSprite.rotation = Math.PI / 2;
         this.graphics.use(WeaponSprite);
     }
 
-    onPostUpdate(_engine: Engine, delta: number) {
-        // Rotation speed based on attack speed from Firebase
-        // baseAtkSpeed: 1.0 = normal speed, 0.7 = slower, 1.5 = faster
-        const rotationSpeed = 5 * this.baseStats.baseAtkSpeed;
-        this.rotation += rotationSpeed * (delta / 1000);
+    // Rotation is now handled by WeaponPivot
+    onPostUpdate(_engine: Engine, _delta: number) {
+        // No rotation logic here
     }
 
     // === Core Stats Getters ===

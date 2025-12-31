@@ -70,7 +70,7 @@ async function startGame() {
     // Create Player 1
     const player1 = new Player(p1ClassData, p1ClassSprite);
     const weapon1 = new Weapon(p1WeaponData, p1WeaponSprite);
-    player1.addChild(weapon1);
+    player1.setWeapon(weapon1);
     player1.pos = vec(200, 400); // Spawn position for Player 1
     player1.scale = vec(2.5, 2.5);
     game.add(player1);
@@ -78,7 +78,7 @@ async function startGame() {
     // Create Player 2
     const player2 = new Player(p2ClassData, p2ClassSprite);
     const weapon2 = new Weapon(p2WeaponData, p2WeaponSprite);
-    player2.addChild(weapon2);
+    player2.setWeapon(weapon2);
     player2.pos = vec(600, 400); // Spawn position for Player 2
     player2.scale = vec(2.5, 2.5);
     game.add(player2);

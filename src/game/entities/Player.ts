@@ -2,12 +2,14 @@ import { Actor, vec, Engine, ImageSource, CollisionType } from 'excalibur';
 import { ModifierManager } from '../systems/ModifierManager';
 import type { CharacterBaseStats, ActiveSkill, OnHitModifiers } from '../types/Stats';
 import type { Weapon } from './Weapon';
+import { WeaponPivot } from './WeaponPivot';
 
 export class Player extends Actor {
     public modifierManager = new ModifierManager();
     private baseStats: CharacterBaseStats;
     private skill?: ActiveSkill;
     public onHitModifiers?: OnHitModifiers; // Public so it can be used for combat later
+    private weaponPivot?: WeaponPivot;
 
     constructor(classData: any, sprite: ImageSource) {
         super({
@@ -37,6 +39,19 @@ export class Player extends Actor {
         const speed = this.currentMoveSpeed;
         const angle = Math.random() * Math.PI * 2;
         this.vel = vec(Math.cos(angle), Math.sin(angle)).scale(speed);
+    }
+
+    /**
+     * Assigns a weapon to the player using a pivot for rotation
+     */
+    public setWeapon(weapon: Weapon) {
+        // Create pivot
+        this.weaponPivot = new WeaponPivot(weapon);
+        this.addChild(this.weaponPivot);
+    }
+
+    public getWeapon(): Weapon | undefined {
+        return this.weaponPivot?.getWeapon();
     }
 
     private setupInitialModifiers() {
@@ -70,7 +85,7 @@ export class Player extends Actor {
     }
 
     get damage(): number {
-        const weapon = this.children[0] as Weapon; // Weapon
+        const weapon = this.getWeapon();
         if (!weapon || !weapon.damage) {
             return this.baseStats.damageIncreaseFlat; // Fallback if no weapon
         }

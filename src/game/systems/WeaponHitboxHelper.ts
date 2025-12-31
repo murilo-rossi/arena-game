@@ -39,10 +39,9 @@ export class WeaponHitboxHelper {
     private static applyBoxHitbox(weapon: Actor, config: HitboxConfig): void {
         const width = config.width ?? 64;
         const height = config.height ?? 8;
-        const anchorX = config.anchorX ?? 1.6;
-        const anchorY = config.anchorY ?? 0.5;
-
-        weapon.collider.useBoxCollider(width, height, vec(anchorX, anchorY));
+        // Use centered anchor for Pivot architecture (ignores old Firebase anchor values)
+        // This ensures hitbox rotates correctly with sprite around weapon center
+        weapon.collider.useBoxCollider(width, height, vec(0, 0.5));
     }
 
     private static applyCircleHitbox(weapon: Actor, config: HitboxConfig): void {
