@@ -68,7 +68,7 @@ async function startGame() {
     const p2WeaponSprite = new ImageSource(`/assets/graphics/weapons/${player2Selection.weapon}.png`);
 
     // Create Player 1
-    const player1 = new Player(p1ClassData, p1ClassSprite);
+    const player1 = new Player(p1ClassData, p1ClassSprite, 1);
     const weapon1 = new Weapon(p1WeaponData, p1WeaponSprite);
     player1.setWeapon(weapon1);
     player1.pos = vec(200, 400); // Spawn position for Player 1
@@ -76,7 +76,7 @@ async function startGame() {
     game.add(player1);
 
     // Create Player 2
-    const player2 = new Player(p2ClassData, p2ClassSprite);
+    const player2 = new Player(p2ClassData, p2ClassSprite, 2);
     const weapon2 = new Weapon(p2WeaponData, p2WeaponSprite);
     player2.setWeapon(weapon2);
     player2.pos = vec(600, 400); // Spawn position for Player 2
@@ -96,6 +96,15 @@ async function startGame() {
     debugUI = new DebugUI(game, player1, player2);
     game.add(debugUI); // Add to engine so onPostUpdate is called every frame
 
+    // Death event handlers
+    player1.on('death', () => {
+      handleGameOver(2); // Player 2 wins
+    });
+
+    player2.on('death', () => {
+      handleGameOver(1); // Player 1 wins
+    });
+
     console.log(`Both players have entered the arena!`);
   } catch (error) {
     console.error("Failed to start game:", error);
@@ -103,6 +112,15 @@ async function startGame() {
     if (player1UI) player1UI.style.display = 'flex';
     if (player2UI) player2UI.style.display = 'flex';
   }
+}
+
+/**
+ * Handle game over when a player dies
+ */
+function handleGameOver(winnerId: number) {
+  game.stop();
+  console.log(`Game Over! Player ${winnerId} wins!`);
+  alert(`Player ${winnerId} wins!`); // Temporary UI - replace with proper screen
 }
 
 // Debug Toggle

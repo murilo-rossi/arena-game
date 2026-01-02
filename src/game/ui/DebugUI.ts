@@ -100,7 +100,7 @@ export class DebugUI extends Actor {
         const weapon = player.getWeapon();
 
         stats.push(`=== ${playerName} ===`);
-        stats.push(`HP: ${player.hp}`);
+        stats.push(`HP: ${player.currentHP.toFixed(0)}/${player.maxHP}`);
         stats.push(`Speed: ${player.currentMoveSpeed}`);
         stats.push(`Damage:${player.damage.toFixed(1)} Crit:${(player.criticalChance * 100).toFixed(0)}%`);
         stats.push(`Pos:(${player.pos.x.toFixed(0)},${player.pos.y.toFixed(0)})`);

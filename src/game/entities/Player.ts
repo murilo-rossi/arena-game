@@ -8,10 +8,15 @@ export class Player extends Actor {
     public modifierManager = new ModifierManager();
     private baseStats: CharacterBaseStats;
     private skill?: ActiveSkill;
-    public onHitModifiers?: OnHitModifiers; // Public so it can be used for combat later
+    public onHitModifiers?: OnHitModifiers;
     private weaponPivot?: WeaponPivot;
 
-    constructor(classData: any, sprite: ImageSource) {
+    // Combat properties
+    public playerId: number;
+    public currentHP: number;
+    public maxHP: number;
+
+    constructor(classData: any, sprite: ImageSource, playerId: number) {
         super({
             pos: vec(400, 400),
             width: 64,
@@ -30,6 +35,11 @@ export class Player extends Actor {
         this.skill = classData.activeSkill;
         this.graphics.use(sprite.toSprite());
 
+        // Combat initialization
+        this.playerId = playerId;
+        this.maxHP = this.baseStats.hp;
+        this.currentHP = this.maxHP;
+
         // Initialize modifiers based on Firebase baseStats
         this.setupInitialModifiers();
     }
@@ -45,13 +55,36 @@ export class Player extends Actor {
      * Assigns a weapon to the player using a pivot for rotation
      */
     public setWeapon(weapon: Weapon) {
-        // Create pivot
-        this.weaponPivot = new WeaponPivot(weapon);
+        // Create pivot and pass playerId for ownership tracking
+        this.weaponPivot = new WeaponPivot(weapon, this.playerId);
         this.addChild(this.weaponPivot);
     }
 
     public getWeapon(): Weapon | undefined {
         return this.weaponPivot?.getWeapon();
+    }
+
+    /**
+     * Apply damage to this player
+     */
+    public takeDamage(amount: number, _source?: Weapon) {
+        this.currentHP -= amount;
+        console.log(`P${this.playerId} took ${amount.toFixed(1)} dmg. HP: ${this.currentHP.toFixed(0)}/${this.maxHP}`);
+
+        if (this.currentHP <= 0) {
+            this.currentHP = 0;
+            this.onDeath();
+        }
+    }
+
+    private onDeath() {
+        console.log(`Player ${this.playerId} has died!`);
+        this.emit('death', { playerId: this.playerId });
+        this.kill(); // Remove from scene
+    }
+
+    get isDead(): boolean {
+        return this.currentHP <= 0;
     }
 
     private setupInitialModifiers() {

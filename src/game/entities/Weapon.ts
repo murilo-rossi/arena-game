@@ -2,11 +2,16 @@ import { Actor, vec, Engine, ImageSource, CollisionType } from 'excalibur';
 import { WeaponHitboxHelper, type HitboxConfig } from '../systems/WeaponHitboxHelper';
 import { ModifierManager } from '../systems/ModifierManager';
 import type { WeaponBaseStats, ActiveSkill } from '../types/Stats';
+import { Player } from './Player';
 
 export class Weapon extends Actor {
     private baseStats: WeaponBaseStats;
     private skill?: ActiveSkill;
     public modifierManager = new ModifierManager();
+
+    // Combat properties
+    public playerId: number = 0; // Will be set by WeaponPivot
+    private currentlyHittingPlayers: Set<number> = new Set();
 
     constructor(weaponData: any, sprite: ImageSource) {
         super({
@@ -41,10 +46,41 @@ export class Weapon extends Actor {
         }
 
         let WeaponSprite = sprite.toSprite();
-        // Adjust sprite rotation if needed so it points "out"
-
         WeaponSprite.rotation = Math.PI / 2;
         this.graphics.use(WeaponSprite);
+    }
+
+    onInitialize(_engine: Engine) {
+        console.log(`Weapon ${this.playerId} initialized, setting up collision handlers`);
+
+        // Collision START - first contact with enemy
+        this.on('collisionstart', (evt) => {
+            // evt.other is the Collider, evt.other.owner is the Actor
+            const other = evt.other.owner;
+            console.log(`Weapon ${this.playerId} collision with:`, other.constructor.name);
+
+            // Check if colliding with enemy Player
+            if (other instanceof Player && other.playerId !== this.playerId) {
+                console.log(`Enemy player detected! P${other.playerId}`);
+                // Only damage if not already hitting this player
+                if (!this.currentlyHittingPlayers.has(other.playerId)) {
+                    this.currentlyHittingPlayers.add(other.playerId);
+                    const damage = this.damage;
+                    other.takeDamage(damage, this);
+                }
+            }
+        });
+
+        // Collision END - weapon exited hitbox
+        this.on('collisionend', (evt) => {
+            const other = evt.other.owner;
+
+            if (other instanceof Player) {
+                // Reset cooldown for this player
+                this.currentlyHittingPlayers.delete(other.playerId);
+                console.log(`Weapon ${this.playerId} exited P${other.playerId}`);
+            }
+        });
     }
 
     // Rotation is now handled by WeaponPivot

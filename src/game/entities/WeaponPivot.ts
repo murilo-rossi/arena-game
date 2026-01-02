@@ -5,7 +5,7 @@ export class WeaponPivot extends Actor {
     private weapon: Weapon;
     private rotationSpeed: number = 0;
 
-    constructor(weapon: Weapon) {
+    constructor(weapon: Weapon, playerId: number) {
         super({
             pos: vec(0, 0), // Centered on player
             width: 1,
@@ -13,6 +13,7 @@ export class WeaponPivot extends Actor {
         });
 
         this.weapon = weapon;
+        this.weapon.playerId = playerId; // Assign ownership for collision detection
         // The pivot holds the weapon
         this.addChild(weapon);
     }
