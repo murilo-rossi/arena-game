@@ -8,7 +8,8 @@ export class Player extends Actor {
     public modifierManager = new ModifierManager();
     private baseStats: CharacterBaseStats;
     private skill?: ActiveSkill;
-    public onHitModifiers?: OnHitModifiers;
+    public onHitTaken?: OnHitModifiers;
+    public onHitGiven?: OnHitModifiers;
     private weaponPivot?: WeaponPivot;
 
     // Combat properties
@@ -31,7 +32,8 @@ export class Player extends Actor {
         this.collider.useCircleCollider(32);
 
         this.baseStats = classData.baseStats;
-        this.onHitModifiers = classData.onHitTakenGiven;
+        this.onHitTaken = classData.onHitTaken;
+        this.onHitGiven = classData.onHitGiven;
         this.skill = classData.activeSkill;
         this.graphics.use(sprite.toSprite());
 
@@ -110,7 +112,7 @@ export class Player extends Actor {
     }
 
     get currentMoveSpeed(): number {
-        return this.modifierManager.calculateStat('moveSpeed', this.baseStats.moveSpeed) * 2;
+        return this.modifierManager.calculateStat('moveSpeed', this.baseStats.moveSpeed) * 4;
     }
 
     get sizeMultiplier(): number {
@@ -162,7 +164,7 @@ export class Player extends Actor {
         return this.skill;
     }
 
-    // Raw baseStats access for debugging
+    // Raw baseStats access
 
     get stats(): CharacterBaseStats {
         return this.baseStats;

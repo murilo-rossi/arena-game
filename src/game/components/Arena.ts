@@ -13,6 +13,7 @@ export class Arena {
             color: wallColor,
             collisionType: CollisionType.Fixed
         });
+        topWall.body.bounciness = 1.0; // Perfect energy preservation
 
         // Bottom Wall
         const bottomWall = new Actor({
@@ -22,6 +23,7 @@ export class Arena {
             color: wallColor,
             collisionType: CollisionType.Fixed
         });
+        bottomWall.body.bounciness = 1.01; // Slight energy gain while bouncing on the ground
 
         // Left Wall
         const leftWall = new Actor({
@@ -31,6 +33,7 @@ export class Arena {
             color: wallColor,
             collisionType: CollisionType.Fixed
         });
+        leftWall.body.bounciness = 1.0;
 
         // Right Wall
         const rightWall = new Actor({
@@ -40,6 +43,7 @@ export class Arena {
             color: wallColor,
             collisionType: CollisionType.Fixed
         });
+        rightWall.body.bounciness = 1.0;
 
         game.add(topWall);
         game.add(bottomWall);

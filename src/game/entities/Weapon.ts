@@ -83,9 +83,8 @@ export class Weapon extends Actor {
         });
     }
 
-    // Rotation is now handled by WeaponPivot
     onPostUpdate(_engine: Engine, _delta: number) {
-        // No rotation logic here
+
     }
 
     // === Core Stats Getters ===
@@ -100,6 +99,10 @@ export class Weapon extends Actor {
 
     get sizeMultiplier(): number {
         return this.modifierManager.calculateStat('sizeMultiplier', this.baseStats.sizeMultiplier);
+    }
+
+    get currentAtkSpeed(): number {
+        return this.modifierManager.calculateStat('atkSpeed', this.baseStats.baseAtkSpeed);
     }
 
     // === Modifier Getters ===
@@ -122,14 +125,10 @@ export class Weapon extends Actor {
         return this.skill;
     }
 
-    // === Legacy getter for compatibility ===
+    // Raw baseStats access
 
     get stats(): WeaponBaseStats {
         return this.baseStats;
     }
 
-    // currentAtkSpeed will be moved to Player in next refactoring
-    get currentAtkSpeed(): number {
-        return this.modifierManager.calculateStat('atkSpeed', this.baseStats.baseAtkSpeed);
-    }
 }
