@@ -11,7 +11,7 @@ Inspirado nos vídeos do canal [Earclacks](https://www.youtube.com/@Earclacks).
 
 ## Funcionalidades
 
-- **Sistema de combate** baseado em colisão com cooldown
+- **Sistema de combate** baseado em colisão
 - **Classes de personagens** com stats únicos, on-hit effects e skills ativas
 - **Armas variadas** com hitboxes customizadas e habilidades especiais
 - **Sistema de modificadores** dinâmico para buffs/debuffs
@@ -128,34 +128,34 @@ Para adicionar ou modificar classes ou armas ao jogo:
 
 ### Em Desenvolvimento
 
-- [ ] **Sistema de On-Hit Effects**
+**Sistema de On-Hit Effects**
   - Implementar triggers `onHitTaken` e `onHitGiven` das classes
   - Acumular modificadores durante o combate
 
-- [ ] **Sistema de Skills**
+**Sistema de Skills**
   - UI/hotkey para ativação de skills
   - Tracking de cooldown
 
-- [ ] **Customização**
+**Customização**
   - Seletor de cores para o personagem
 
-- [ ] **Efeitos sonoros**
+**Efeitos sonoros**
   - Efeitos de habilidades
   - Efeitos de dano
   - Trilha sonora
 
 ### Planejado
 
-- [ ] **Modo Campanha**
+**Modo Campanha**
   - Seleção de 1 personagem apenas
   - Inimigos aleatórios com presets do banco de dados
   - Progressão sequencial de batalhas
 
-- [ ] **Redesign do Menu**
+**Redesign do Menu**
   - Nova identidade visual
   - Melhorar UX da tela de seleção
 
-- [ ] **Sistema Roguelike**
+**Sistema Roguelike**
   - Escolher 1 de 3 upgrades após cada batalha
   - Gerenciamento de pool de upgrades
   - Persistência entre batalhas
