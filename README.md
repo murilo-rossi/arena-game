@@ -3,8 +3,6 @@
 Um jogo de luta simples focado em arquitetura de software escalável.
 Inspirado nos vídeos do canal [Earclacks](https://www.youtube.com/@Earclacks).
 
-![Exemplo batalha](https://image2url.com/r2/default/gifs/1768272854197-c2fc5bf6-9c5c-4642-99fc-10fe0adc2edd.gif)
-
 <p align="center">
   <img src="https://image2url.com/r2/default/gifs/1768272854197-c2fc5bf6-9c5c-4642-99fc-10fe0adc2edd.gif" alt="Exemplo de batalha entre os personagens">
 </p>
