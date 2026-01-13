@@ -1,0 +1,122 @@
+[
+    {
+        "id": "master",
+        "name": "Mestre de Armas",
+        "description": "O Mestre de Armas é um guerreiro experiente que domina o uso de qualquer arma em combate. Ele veio a arena pois mais nenhum de seus oponentes apresentava um desafio",
+        "baseStats": {
+            "hp": 100,
+            "sizeMultiplier": 0.0,
+            "moveSpeed": 180,
+            "moveSpeedIncreaseFlat": 0.0,
+            "moveSpeedIncreaseMultiplier": 0.0,
+            "atkSpeedIncreaseFlat": 0,
+            "atkSpeedIncreaseMultiplier": 0.1,
+            "defenseIncreaseFlat": 0,
+            "defenseIncreaseMultiplier": 0.0,
+            "damageIncreaseFlat": 0,
+            "damageIncreaseMultiplier": 0.0,
+            "criticalChance": 0.2,
+            "criticalChanceIncreaseFlat": 0,
+            "criticalChanceIncreaseMultiplier": 0.0,
+            "criticalDamageIncreaseMultiplier": 0
+        },
+        "onHitTakeGiven": {
+            "atkSpeedIncreaseFlat": 0.1
+        },
+        "onHitTakeTaken": {
+            "atkSpeedIncreaseFlat": 0.1
+        },
+        "activeSkill": {
+            "id": "mastery",
+            "name": "Dominância",
+            "cooldown": 10,
+            "duration": 5,
+            "effects": {
+                "atkSpeedMultiplier": 0.4,
+                "healOnActivate": 30
+            }
+        }
+    },
+    {
+        "id": "berserker",
+        "name": "Berserker",
+        "description": "O Berserker é um combatente perdido que usa sua força e resiliência para enfrentar adversários em combate. Ele veio a arena em busca de batalhas fantásticas.",
+        "baseStats": {
+            "hp": 130,
+            "sizeMultiplier": 0.0,
+            "moveSpeed": 170,
+            "moveSpeedIncreaseFlat": 0.0,
+            "moveSpeedMultiplier": 0.0,
+            "atkSpeedIncreaseFlat": 0,
+            "atkSpeedIncreaseMultiplier": 0.0,
+            "defenseIncreaseFlat": 0,
+            "defenseIncreaseMultiplier": 0.0,
+            "damageIncreaseFlat": 1,
+            "damageIncreaseMultiplier": 0.0,
+            "criticalChance": 0.2,
+            "criticalChanceIncreaseFlat": 0,
+            "criticalChanceIncreaseMultiplier": 0.0,
+            "criticalDamageIncreaseMultiplier": 0
+        },
+        "onHitTaken": {
+            "criticalChanceIncreaseFlat": 0.05,
+            "criticalDamageIncreaseMultiplier": 0.1
+        },
+        "onHitGiven": {
+            "criticalChanceIncreaseFlat": 0.05,
+            "criticalDamageIncreaseMultiplier": 0.1
+        },
+        "activeSkill": {
+            "id": "rage",
+            "name": "Fúria",
+            "cooldown": 15,
+            "duration": 5,
+            "effects": {
+                "moveSpeedMultiplier": 0.5,
+                "sizeMultiplier": 0.2,
+                "healOnActivate": 50
+            }
+        }
+    },
+    {
+        "id": "tainter",
+        "name": "Contaminador",
+        "description": "Caos. Peste. Veneno. Ele veio a arena para se divertir espalhando pragas.",
+        "baseStats": {
+            "hp": 140,
+            "sizeMultiplier": 0.0,
+            "moveSpeed": 150,
+            "moveSpeedIncreaseFlat": 0.0,
+            "moveSpeedMultiplier": 0.0,
+            "atkSpeedIncreaseFlat": 0,
+            "atkSpeedIncreaseMultiplier": 0.0,
+            "defenseIncreaseFlat": 0,
+            "defenseIncreaseMultiplier": 0.0,
+            "damageIncreaseFlat": 1,
+            "damageIncreaseMultiplier": 0.0,
+            "criticalChance": 0.2,
+            "criticalChanceIncreaseFlat": 0,
+            "criticalChanceIncreaseMultiplier": 0.0,
+            "criticalDamageIncreaseMultiplier": 0
+        },
+        "onHitTaken": {
+            "criticalChanceIncreaseFlat": 0.05,
+            "criticalDamageIncreaseMultiplier": 0.1
+        },
+        "onHitGiven": {
+            "criticalChanceIncreaseFlat": 0.05,
+            "criticalDamageIncreaseMultiplier": 0.1
+        },
+        "activeSkill": {
+            "id": "miasma",
+            "name": "Miasma",
+            "cooldown": 20,
+            "duration": 5,
+            "effects": {
+                "poisonAllArena": true,
+                "poisonDamagePerSecond": 1,
+                "lifesteal": 1
+            }
+        }
+    }
+]

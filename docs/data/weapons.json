@@ -1,0 +1,90 @@
+[
+    {
+        "id": "stick",
+        "name": "Graveto",
+        "description": "Um simples graveto. O que mais você precisa?",
+        "baseStats": {
+            "damage": 5,
+            "sizeMultiplier": 0.0,
+            "baseAtkSpeed": 1.0,
+            "atkSpeedMultiplier": 0.0,
+            "damageIncreaseFlat": 0,
+            "damageIncreaseMultiplier": 0.0
+        },
+        "hitbox": {
+            "type": "box",
+            "width": 64,
+            "height": 8,
+            "anchorX": 1.5,
+            "anchorY": 0.5
+        },
+        "activeSkill": {
+            "id": "sticking",
+            "name": "Gravetando",
+            "cooldown": 15,
+            "duration": 6,
+            "effects": {
+                "atkSpeedMultiplier": 0.4,
+                "damageIncreaseFlat": 3
+            }
+        }
+    },
+    {
+        "id": "golden_stick",
+        "name": "Graveto de Ouro",
+        "description": "Primo perdido de um graveto que talvez você conheça.",
+        "baseStats": {
+            "damage": 8,
+            "sizeMultiplier": 0.4,
+            "baseAtkSpeed": 0.7,
+            "atkSpeedMultiplier": 0.0,
+            "damageIncreaseFlat": 0,
+            "damageIncreaseMultiplier": 0.0
+        },
+        "hitbox": {
+            "type": "box",
+            "width": 64,
+            "height": 8,
+            "anchorX": 1.5,
+            "anchorY": 0.5
+        },
+        "activeSkill": {
+            "id": "golden_sticking",
+            "name": "Gravetando Douradamente",
+            "cooldown": 10,
+            "duration": 2,
+            "effects": {
+                "sizeMultiplier": 0.4,
+                "atkSpeedMultiplier": -0.3,
+                "damageIncreaseMultiplier": 0.5
+            }
+        }
+    },
+    {
+        "id": "magic_orb",
+        "name": "Orbe Mágico",
+        "description": "Uma esfera mágica que foi achada no chão.",
+        "baseStats": {
+            "damage": 12,
+            "sizeMultiplier": 0.2,
+            "baseAtkSpeed": 0.6,
+            "atkSpeedMultiplier": 0.2,
+            "damageIncreaseFlat": 0,
+            "damageIncreaseMultiplier": 0.0
+        },
+        "hitbox": {
+            "type": "circle",
+            "radius": 18
+        },
+        "activeSkill": {
+            "id": "orb_explosion",
+            "name": "Explosão Mágica",
+            "cooldown": 12,
+            "duration": 3,
+            "effects": {
+                "sizeMultiplier": 1.0,
+                "damageIncreaseMultiplier": 0.8
+            }
+        }
+    }
+]

@@ -42,7 +42,7 @@ export class Weapon extends Actor {
         } else {
             // Fallback: centered anchor for Pivot architecture
             console.warn(`Weapon ${weaponData.id} has no hitbox data. Using default.`);
-            this.collider.useBoxCollider(64, 8, vec(0.5, 0.5));
+            this.collider.useBoxCollider(64, 8, vec(0, 0.5));
         }
 
         let WeaponSprite = sprite.toSprite();

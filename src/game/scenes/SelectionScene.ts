@@ -6,20 +6,23 @@ const SCREEN_WIDTH = 800;
 const CENTER_X = SCREEN_WIDTH / 2;
 
 // Available options
+// TODO: Load from Firebase
 const AVAILABLE_CLASSES = ['master', 'berserker', 'tainter'];
 const AVAILABLE_WEAPONS = ['stick', 'golden_stick', 'magic_orb'];
 
 // Display names
+// TODO: Load from Firebase
 const CLASS_NAMES: Record<string, string> = {
     'master': 'Mestre das Armas',
     'berserker': 'Berserker',
     'tainter': 'Tainter'
 };
 
+// TODO: Load from Firebase
 const WEAPON_NAMES: Record<string, string> = {
     'stick': 'Graveto',
     'golden_stick': 'Graveto de Ouro',
-    'magic_orb': 'Orbe de Magia'
+    'magic_orb': 'Orbe Mágico'
 };
 
 /**
@@ -38,7 +41,7 @@ export class SelectionScene extends Scene {
 
         // Title
         const title = new Label({
-            text: 'SELECT YOUR FIGHTER',
+            text: 'Selecione seu personagem',
             pos: vec(CENTER_X, 80),
             font: new Font({
                 family: 'Arial',
@@ -54,7 +57,7 @@ export class SelectionScene extends Scene {
 
         // Class label
         const classLabel = new Label({
-            text: 'CLASS',
+            text: 'Classe',
             pos: vec(leftColumnX, 150),
             font: new Font({
                 family: 'Arial',
@@ -83,7 +86,7 @@ export class SelectionScene extends Scene {
 
         // Weapon label
         const weaponLabel = new Label({
-            text: 'WEAPON',
+            text: 'Arma',
             pos: vec(rightColumnX, 150),
             font: new Font({
                 family: 'Arial',
@@ -112,7 +115,7 @@ export class SelectionScene extends Scene {
 
         // Start button
         this.startButton = new Button({
-            text: 'START',
+            text: 'Iniciar',
             pos: { x: CENTER_X, y: 420 },
             width: 200,
             height: 60,
@@ -124,7 +127,7 @@ export class SelectionScene extends Scene {
 
         // P2 info
         const p2Info = new Label({
-            text: 'Player 2 will be randomized',
+            text: 'Jogador 2 será aleatório',
             pos: vec(CENTER_X, 520),
             font: new Font({
                 family: 'Arial',

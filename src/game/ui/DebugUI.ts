@@ -1,4 +1,4 @@
-import { Actor, Label, Font, Color, vec, Engine, CoordPlane, Keys, CollisionType } from 'excalibur';
+import { Actor, Label, Font, Color, vec, Engine, CoordPlane, Keys } from 'excalibur';
 import { Player } from '../entities/Player';
 
 /**
@@ -18,7 +18,6 @@ export class DebugUI extends Actor {
             width: 800,
             height: 800,
             z: 9999,
-            collisionType: CollisionType.Passive
         });
 
         // Ensure UI stays fixed to screen

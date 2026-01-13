@@ -66,9 +66,6 @@ export class Player extends Actor {
         return this.weaponPivot?.getWeapon();
     }
 
-    /**
-     * Apply damage to this player
-     */
     public takeDamage(amount: number, _source?: Weapon) {
         this.currentHP -= amount;
         console.log(`P${this.playerId} took ${amount.toFixed(1)} dmg. HP: ${this.currentHP.toFixed(0)}/${this.maxHP}`);

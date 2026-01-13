@@ -16,7 +16,7 @@ export class MainMenuScene extends Scene {
 
         // Title
         const title = new Label({
-            text: 'ARENA DOS CÍRCULOS',
+            text: 'Arena dos Círculos',
             pos: vec(CENTER_X, 200),
             font: new Font({
                 family: 'Consolas',
@@ -32,7 +32,7 @@ export class MainMenuScene extends Scene {
 
         // Subtitle
         const subtitle = new Label({
-            text: 'Batalha aí!',
+            text: 'Batalhe!',
             pos: vec(CENTER_X, 280),
             font: new Font({
                 family: 'Consolas',
@@ -47,7 +47,7 @@ export class MainMenuScene extends Scene {
 
         // Play Button
         const playButton = new Button({
-            text: 'PLAY',
+            text: 'Jogar',
             pos: { x: CENTER_X, y: 450 },
             width: 200,
             height: 60,
