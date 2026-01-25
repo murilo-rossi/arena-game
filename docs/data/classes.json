@@ -20,10 +20,10 @@
             "criticalChanceIncreaseMultiplier": 0.0,
             "criticalDamageIncreaseMultiplier": 0
         },
-        "onHitTakeGiven": {
+        "onHitTaken": {
             "atkSpeedIncreaseFlat": 0.1
         },
-        "onHitTakeTaken": {
+        "onHitGiven": {
             "atkSpeedIncreaseFlat": 0.1
         },
         "activeSkill": {
@@ -81,7 +81,7 @@
     {
         "id": "tainter",
         "name": "Contaminador",
-        "description": "Caos. Peste. Veneno. Ele veio a arena para se divertir espalhando pragas.",
+        "description": "Peste. Veneno. Ele veio a arena para se divertir espalhando pragas.",
         "baseStats": {
             "hp": 140,
             "sizeMultiplier": 0.0,
@@ -100,12 +100,10 @@
             "criticalDamageIncreaseMultiplier": 0
         },
         "onHitTaken": {
-            "criticalChanceIncreaseFlat": 0.05,
-            "criticalDamageIncreaseMultiplier": 0.1
+            "moveSpeed": 10
         },
         "onHitGiven": {
-            "criticalChanceIncreaseFlat": 0.05,
-            "criticalDamageIncreaseMultiplier": 0.1
+            "moveSpeed": 10
         },
         "activeSkill": {
             "id": "miasma",

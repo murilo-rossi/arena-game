@@ -61,7 +61,8 @@ export interface ActiveSkill {
 }
 
 export interface OnHitModifiers {
-    atkSpeedIncreaseFlat?: number;
-    criticalChance?: number;
-    criticalDamageIncreaseMultiplier?: number;
+    // Allow any stat name as key with number value
+    // This makes it flexible for any modifier from JSON
+    [key: string]: number;
 }
+

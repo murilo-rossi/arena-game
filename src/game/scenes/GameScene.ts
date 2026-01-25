@@ -4,6 +4,7 @@ import { Player } from '../entities/Player';
 import { Weapon } from '../entities/Weapon';
 import { Arena } from '../components/Arena';
 import { DebugUI } from '../ui/DebugUI';
+import { OnHitEffectManager } from '../systems/OnHitEffectManager';
 
 interface GameData {
     p1: { class: string; weapon: string };
@@ -16,9 +17,13 @@ interface GameData {
 export class GameScene extends Scene {
     private debugUI: DebugUI | null = null;
     private dbService = new DatabaseService();
+    public onHitEffectManager!: OnHitEffectManager;
 
     async onActivate(context: { engine: Engine }) {
         const engine = context.engine;
+
+        // Initialize OnHitEffectManager
+        this.onHitEffectManager = new OnHitEffectManager();
 
         // Change background to arena color
         engine.backgroundColor = Color.fromHex('#a1c8d6');

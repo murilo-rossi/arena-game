@@ -128,7 +128,11 @@ Para adicionar ou modificar classes ou armas ao jogo:
 
 ### Em Desenvolvimento
 
+<<<<<<< HEAD
 **Sistema de On-Hit Effects**
+=======
+- [x] **Sistema de On-Hit Effects**
+>>>>>>> 8e3d016 (feat: implement onHit system)
   - Implementar triggers `onHitTaken` e `onHitGiven` das classes
   - Acumular modificadores durante o combate
 

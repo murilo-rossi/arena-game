@@ -66,9 +66,29 @@ export class Player extends Actor {
         return this.weaponPivot?.getWeapon();
     }
 
-    public takeDamage(amount: number, _source?: Weapon) {
+    public takeDamage(amount: number, source?: Weapon) {
         this.currentHP -= amount;
         console.log(`P${this.playerId} took ${amount.toFixed(1)} dmg. HP: ${this.currentHP.toFixed(0)}/${this.maxHP}`);
+
+        // Trigger onHit effects if source is a weapon
+        if (source && this.scene) {
+            // Find the attacker player by weapon's playerId
+            const actors = this.scene.actors;
+            const attacker = actors.find((actor) => {
+                if (actor instanceof Player && actor.playerId === source.playerId) {
+                    return true;
+                }
+                return false;
+            }) as Player | undefined;
+
+            if (attacker) {
+                // Import GameScene to access onHitEffectManager
+                const gameScene = this.scene as any;
+                if (gameScene.onHitEffectManager) {
+                    gameScene.onHitEffectManager.applyOnHit(attacker, this);
+                }
+            }
+        }
 
         if (this.currentHP <= 0) {
             this.currentHP = 0;
@@ -130,7 +150,7 @@ export class Player extends Actor {
     }
 
     get criticalChance(): number {
-        return this.baseStats.criticalChance;
+        return this.modifierManager.calculateStat('criticalChance', this.baseStats.criticalChance);
     }
 
     get criticalMultiplier(): number {
@@ -138,15 +158,16 @@ export class Player extends Actor {
     }
 
     get criticalDamageMultiplier(): number {
-        return this.baseStats.criticalDamageIncreaseMultiplier;
+        return this.modifierManager.calculateStat('criticalDamageIncreaseMultiplier', this.baseStats.criticalDamageIncreaseMultiplier);
     }
 
     get atkSpeedIncreaseFlat(): number {
-        return this.baseStats.atkSpeedIncreaseFlat;
+        const calculated = this.modifierManager.calculateStat('atkSpeedIncreaseFlat', this.baseStats.atkSpeedIncreaseFlat);
+        return calculated;
     }
 
     get atkSpeedIncreaseMultiplier(): number {
-        return this.baseStats.atkSpeedIncreaseMultiplier;
+        return this.modifierManager.calculateStat('atkSpeedIncreaseMultiplier', this.baseStats.atkSpeedIncreaseMultiplier);
     }
 
     get defenseFlat(): number {

@@ -57,11 +57,9 @@ export class Weapon extends Actor {
         this.on('collisionstart', (evt) => {
             // evt.other is the Collider, evt.other.owner is the Actor
             const other = evt.other.owner;
-            console.log(`Weapon ${this.playerId} collision with:`, other.constructor.name);
 
             // Check if colliding with enemy Player
             if (other instanceof Player && other.playerId !== this.playerId) {
-                console.log(`Enemy player detected! P${other.playerId}`);
                 // Only damage if not already hitting this player
                 if (!this.currentlyHittingPlayers.has(other.playerId)) {
                     this.currentlyHittingPlayers.add(other.playerId);
@@ -78,7 +76,6 @@ export class Weapon extends Actor {
             if (other instanceof Player) {
                 // Reset cooldown for this player
                 this.currentlyHittingPlayers.delete(other.playerId);
-                console.log(`Weapon ${this.playerId} exited P${other.playerId}`);
             }
         });
     }

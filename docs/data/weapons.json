@@ -67,14 +67,14 @@
         "baseStats": {
             "damage": 12,
             "sizeMultiplier": 0.2,
-            "baseAtkSpeed": 0.6,
+            "baseAtkSpeed": 1.5,
             "atkSpeedMultiplier": 0.2,
             "damageIncreaseFlat": 0,
             "damageIncreaseMultiplier": 0.0
         },
         "hitbox": {
             "type": "circle",
-            "radius": 18
+            "radius": 20
         },
         "activeSkill": {
             "id": "orb_explosion",
