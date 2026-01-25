@@ -1,6 +1,6 @@
 # Arena dos Círculos
 
-Um jogo de luta simples focado em arquitetura de software escalável.
+Um jogo de luta simples.
 Inspirado nos vídeos do canal [Earclacks](https://www.youtube.com/@Earclacks).
 
 <p align="center">
