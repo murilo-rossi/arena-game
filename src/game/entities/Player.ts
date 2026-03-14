@@ -3,6 +3,7 @@ import { ModifierManager } from '../systems/ModifierManager';
 import type { CharacterBaseStats, ActiveSkill, OnHitModifiers } from '../types/Stats';
 import type { Weapon } from './Weapon';
 import { WeaponPivot } from './WeaponPivot';
+import { AudioManager } from '../systems/AudioManager';
 
 export class Player extends Actor {
     public modifierManager = new ModifierManager();
@@ -46,11 +47,20 @@ export class Player extends Actor {
         this.setupInitialModifiers();
     }
 
-    onInitialize(engine: Engine) {
+    onInitialize(_engine: Engine) {
         // Set initial movement once. The physics engine handles the rest.
         const speed = this.currentMoveSpeed;
         const angle = Math.random() * Math.PI * 2;
         this.vel = vec(Math.cos(angle), Math.sin(angle)).scale(speed);
+
+        // Play wall bounce sound when hitting arena boundaries
+        this.on('collisionstart', (evt) => {
+            const other = evt.other.owner;
+            // Walls are plain Actors (not Player, not Weapon children)
+            if (!(other instanceof Player)) {
+                AudioManager.getInstance().playWallHit();
+            }
+        });
     }
 
     /**

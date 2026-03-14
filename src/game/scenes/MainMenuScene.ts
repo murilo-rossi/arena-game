@@ -1,5 +1,6 @@
 import { Scene, Engine, Label, Font, FontUnit, Color, vec, TextAlign, BaseAlign } from 'excalibur';
 import { Button } from '../ui/Button';
+import { AudioManager } from '../systems/AudioManager';
 
 // Screen dimensions
 const SCREEN_WIDTH = 800;
@@ -57,5 +58,11 @@ export class MainMenuScene extends Scene {
             }
         });
         this.add(playButton);
+    }
+
+    async onActivate() {
+        const audio = AudioManager.getInstance();
+        await audio.load();
+        audio.playMenuMusic();
     }
 }

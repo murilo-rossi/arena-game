@@ -3,6 +3,7 @@ import { WeaponHitboxHelper, type HitboxConfig } from '../systems/WeaponHitboxHe
 import { ModifierManager } from '../systems/ModifierManager';
 import type { WeaponBaseStats, ActiveSkill } from '../types/Stats';
 import { Player } from './Player';
+import { AudioManager } from '../systems/AudioManager';
 
 export class Weapon extends Actor {
     private baseStats: WeaponBaseStats;
@@ -65,6 +66,7 @@ export class Weapon extends Actor {
                     this.currentlyHittingPlayers.add(other.playerId);
                     const damage = this.damage;
                     other.takeDamage(damage, this);
+                    AudioManager.getInstance().playHitSound();
                 }
             }
         });

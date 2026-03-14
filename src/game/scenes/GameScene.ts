@@ -5,6 +5,7 @@ import { Weapon } from '../entities/Weapon';
 import { Arena } from '../components/Arena';
 import { DebugUI } from '../ui/DebugUI';
 import { OnHitEffectManager } from '../systems/OnHitEffectManager';
+import { AudioManager } from '../systems/AudioManager';
 
 interface GameData {
     p1: { class: string; weapon: string };
@@ -22,8 +23,10 @@ export class GameScene extends Scene {
     async onActivate(context: { engine: Engine }) {
         const engine = context.engine;
 
-        // Initialize OnHitEffectManager
         this.onHitEffectManager = new OnHitEffectManager();
+
+        // Stop menu music when battle starts
+        AudioManager.getInstance().stopMenuMusic();
 
         // Change background to arena color
         engine.backgroundColor = Color.fromHex('#a1c8d6');
@@ -96,14 +99,24 @@ export class GameScene extends Scene {
 
     private handleGameOver(engine: Engine, winnerId: number) {
         console.log(`Game Over! Player ${winnerId} wins!`);
-        alert(`Player ${winnerId} wins!`);
 
-        // Restore main menu background color
-        engine.backgroundColor = Color.fromHex('#2b2b2b');
+        const audio = AudioManager.getInstance();
+        if (winnerId === 1) {
+            audio.playSuccess();
+        } else {
+            audio.playFailed();
+        }
 
-        // Clear scene and go back to menu
-        this.clear();
-        engine.goToScene('menu');
+        setTimeout(() => {
+            alert(`Player ${winnerId} wins!`);
+
+            // Restore main menu background color
+            engine.backgroundColor = Color.fromHex('#2b2b2b');
+
+            // Clear scene and go back to menu (music restarts in MainMenuScene.onActivate)
+            this.clear();
+            engine.goToScene('menu');
+        }, 1500);
     }
 
     onDeactivate() {

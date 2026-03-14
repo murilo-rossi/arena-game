@@ -1,5 +1,6 @@
 import { Scene, Engine, Label, Font, FontUnit, Color, vec, TextAlign, BaseAlign } from 'excalibur';
 import { Button } from '../ui/Button';
+import { AudioManager } from '../systems/AudioManager';
 
 // Screen dimensions
 const SCREEN_WIDTH = 800;
@@ -183,5 +184,8 @@ export class SelectionScene extends Scene {
         this.classButtons.forEach(btn => btn.setSelected(false));
         this.weaponButtons.forEach(btn => btn.setSelected(false));
         this.startButton.color = Color.fromHex('#333333');
+
+        // Keep menu music playing
+        AudioManager.getInstance().playMenuMusic();
     }
 }
